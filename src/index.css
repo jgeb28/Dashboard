@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-gray: #f1f3f4;
+  --color-dark-panel: #191d23;
+  --color-dark: #0d0f11;
+  --purple: #7b57e0;
+  --stroke-gray: #576776;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+#root {
+  --bg-gray: #f1f3f4;
+  --bg-dark: #0d0f11;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.outline-button-border {
+  border: 1px solid #7b57e0;
+}
+
+.text-purple {
+  color: #7b57e0;
+}
+

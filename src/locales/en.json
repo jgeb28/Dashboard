@@ -1,0 +1,118 @@
+{
+  "loginPage": {
+    "header": "Sign In",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign In",
+    "alerts": {
+      "success": "Signed in successfully",
+      "error": "Wrong credentials"
+    }
+  },
+  "ordersPage": {
+    "title": "Orders",
+    "orderDate": "Order Date",
+    "status": {
+      "column": "Status",
+      "unPaid": "Unpaid",
+      "unSent": "Unsent",
+      "returned": "Returns"
+    },
+    "price": "Price",
+    "details": "Details"
+  },
+  "dashboardPage": {
+    "ordersWidgetTitle": "Orders",
+    "salesQualityWidgetTitle": "Sales Quality",
+    "rankingWigetTitle": "Offers Ranking",
+    "salesChartWidgetTitle": "Sales Chart",
+    "opinionsWidgetTitle": "Buyers Opinions"
+  },
+  "salesQualityWidget": {
+    "score": "You received: ",
+    "rank": "Super Seller",
+    "rankLabel": "Quality rank:",
+    "aspectsToImprove": "Aspects to improve:"
+  },
+  "rankingFilter": {
+    "mostFrequent": "Most frequent",
+    "leastFrequent": "Least frequent"
+  },
+  "opinionsFilter": {
+    "positive": "Positive",
+    "negative": "Negative",
+    "all": "All"
+  },
+  "opinionPage": {
+    "title": "Opinions",
+    "rate": "Rate",
+    "comment": "Comment",
+    "category": "Category",
+    "positive": "Positive",
+    "negative": "Negative",
+    "all": "All"
+  },
+  "chartPeriodFilter": {
+    "day": "Day",
+    "week": "Week",
+    "year": "Year"
+  },
+  "chartDataFilter": {
+    "revenue": "Revenue",
+    "itemsSold": "Sold items"
+  },
+  "chartTypeFilter": {
+    "line": "Line",
+    "bar": "Bar"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "qualityPage": {
+    "title": "Sales Quality",
+    "aspect": "Aspect",
+    "points": "Points",
+    "scale": "Scale"
+  },
+  "offerItem": {
+    "units": "Items sold:",
+    "revenue": "Revenue:",
+    "numberOfViews": "Number of views:"
+  },
+  "sellerCategories": {
+    "worstSeller": "The Worst Seller",
+    "badSeller": "Bad Seller",
+    "normalSeller": "Medium Seller",
+    "goodSeller": "Good Seller",
+    "superSeller": "Super Seller"
+  },
+  "dailyTipLabel": "Daily tip",
+  "dailyTip": "Remember to shipp parcels on time",
+  "dashboard": "Dashboard",
+  "salesQuality": "Sales Quality",
+  "logout": "Logout",
+  "previous": "Previous",
+  "next": "Next",
+  "details": "Details",
+  "noDataToDisplay": "No data to display"
+}

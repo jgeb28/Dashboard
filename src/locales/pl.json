@@ -1,0 +1,119 @@
+{
+  "loginPage": {
+    "header": "Logowanie",
+    "username": "Nazwa Użytkownika",
+    "password": "Hasło",
+    "submit": "Zaloguj się",
+    "alerts": {
+      "success": "Zalogowano pomyślnie",
+      "error": "Błędne dane"
+    }
+  },
+  "ordersPage": {
+    "title": "Zamówienia",
+    "orderDate": "Data zamówienia",
+    "status": {
+      "column": "Status",
+      "unPaid": "Nieopłacone",
+      "unSent": "Niewysłane",
+      "returned": "Zwroty"
+    },
+    "price": "Kwota",
+    "details": "Szczegóły"
+  },
+  "dashboardPage": {
+    "ordersWidgetTitle": "Zamówienia",
+    "salesQualityWidgetTitle": "Jakość Sprzedaży",
+    "rankingWigetTitle": "Ranking Ofert",
+    "salesChartWidgetTitle": "Wykres Sprzedaży",
+    "opinionsWidgetTitle": "Opinie kupujących"
+  },
+  "salesQualityWidget": {
+    "score": "Otrzymałeś: ",
+    "rankLabel": "Kategoria jakości:",
+    "rank": "Super Sprzedawca",
+    "aspectsToImprove": "Aspekty do poprawy:"
+  },
+  "rankingFilter": {
+    "mostFrequent": "Najczęściej",
+    "leastFrequent": "Najrzadziej"
+  },
+  "opinionsFilter": {
+    "positive": "Pozytywne",
+    "negative": "Negatywne",
+    "all": "Wszystkie"
+  },
+  "opinionPage": {
+    "title": "Opinie kupujących",
+    "rate": "Ocena",
+    "comment": "Komentarz",
+    "category": "Kategoria",
+    "positive": "Pozytywne",
+    "negative": "Negatywne",
+    "all": "Wszystkie"
+  },
+  "chartPeriodFilter": {
+    "day": "Dzień",
+    "week": "Tydzień",
+    "year": "Rok"
+  },
+  "chartDataFilter": {
+    "revenue": "Obrót",
+    "itemsSold": "Liczba sprz. szt."
+  },
+  "chartTypeFilter": {
+    "line": "Liniowy",
+    "bar": "Słupkowy"
+  },
+  "months": {
+    "january": "Styczeń",
+    "february": "Luty",
+    "march": "Marzec",
+    "april": "Kwiecień",
+    "may": "Maj",
+    "june": "Czerwiec",
+    "july": "Lipiec",
+    "august": "Sierpień",
+    "september": "Wrzesień",
+    "october": "Październik",
+    "november": "Listopad",
+    "december": "Grudzień"
+  },
+  "days": {
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota",
+    "sunday": "Niedziela"
+  },
+  "qualityPage": {
+    "title": "Jakość sprzedaży",
+    "aspect": "Aspekt",
+    "points": "Liczba punktów",
+    "scale": "Waga"
+  },
+  "offerItem": {
+    "name": "Nazwa:",
+    "units": "Liczba sprzedanych sztuk:",
+    "revenue": "Obrót:",
+    "numberOfViews": "Liczba wyświetleń:"
+  },
+  "sellerCategories": {
+    "worstSeller": "Najgorszy Sprzedawca",
+    "badSeller": "Kiepski Sprzedawca",
+    "normalSeller": "Przeciętny Sprzedawca",
+    "goodSeller": "Dobry Sprzedawca",
+    "superSeller": "Super Sprzedawca"
+  },
+  "dailyTipLabel": "Porada dnia",
+  "dailyTip": "Pamiętaj o dostarczaniu przesyłek na czas",
+  "dashboard": "Dashboard",
+  "salesQuality": "Jakość sprzedaży",
+  "logout": "Wyloguj się",
+  "previous": "Poprzednia",
+  "next": "Następna",
+  "details": "Szczegóły",
+  "noDataToDisplay": "Brak danych do wyświetlenia"
+}
