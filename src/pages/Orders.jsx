@@ -5,10 +5,12 @@ import { useState, useEffect } from "react";
 import OutlineButton from "../components/OutlineButton";
 import DropDownMenu from "../components/DropDownMenu";
 import Table from "../components/subpages/Table";
+import { useUser } from "../contexts/UserContext";
+
 
 export default function Orders() {
   const { t } = useTranslation();
-  const userId = JSON.parse(localStorage.getItem("userId"));
+  const { userId } = useUser();
 
   const ordersPerPage = 8;
   const [page, setPage] = useState(0);
@@ -22,7 +24,7 @@ export default function Orders() {
     );
     setFilteredOrders(newFilteredOrders);
     setPage(0);
-  }, [category]);
+  }, [category, userId]);
 
   useEffect(() => {
     setPaginatedOrders(

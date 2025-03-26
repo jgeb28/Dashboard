@@ -5,10 +5,12 @@ import { useState, useEffect } from "react";
 import OutlineButton from "../components/OutlineButton";
 import Table from "../components/subpages/Table";
 import SalesQualityWidget from "../components/SalesQualityWidget";
+import { useUser } from "../contexts/UserContext";
+
 
 export default function Quality() {
-  const userId = JSON.parse(localStorage.getItem("userId"));
   const { t } = useTranslation();
+  const { userId } = useUser();
 
   const ordersPerPage = 5;
   const [page, setPage] = useState(0);
@@ -17,7 +19,7 @@ export default function Quality() {
   useEffect(() => {
     const filteredAspects = aspects.filter(
       (aspect) => aspect.userId === userId
-    ).map(({userId,...aspect})=>aspect);
+    ).map(({ userId, ...aspect }) => aspect);
 
     setPaginated(
       filteredAspects.slice(page * ordersPerPage, (page + 1) * ordersPerPage)

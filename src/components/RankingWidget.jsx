@@ -1,23 +1,28 @@
 import WidgetContainer from "../components/WidgetContainer";
 import DropDownMenu from "./DropDownMenu";
 import OfferListItem from "./OfferListItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUser } from "../contexts/UserContext";
+
 import { offers } from "../data/offers";
 
 export default function RankingWidget({ title }) {
-  const userId = JSON.parse(localStorage.getItem("userId"));
-  const [selectedOption, setSelectedOption] = useState("mostFrequent");
+  const { userId } = useUser();
+  const [selectedOption, setSelectedOption] = useState("mostFrequent")
+  const [sortedOffers, setSortedOffers] = useState([])
 
   const options = [
     { label: "rankingFilter.mostFrequent", value: "mostFrequent" },
     { label: "rankingFilter.leastFrequent", value: "leastFrequent" },
   ];
 
-  const userOffers = offers.filter((offer) => offer.userId === userId);
+  useEffect(() => {
+    let userOffers = offers.filter((offer) => offer.userId === userId)
+    setSortedOffers([...userOffers].sort((a, b) => {
+      return selectedOption === "mostFrequent" ? b.units - a.units : a.units - b.units;
+    }));
+  }, [selectedOption, userId])
 
-  const sortedOffers = [...userOffers].sort((a, b) => {
-    return selectedOption === "mostFrequent" ? b.units - a.units : a.units - b.units;
-  });
 
   return (
     <WidgetContainer

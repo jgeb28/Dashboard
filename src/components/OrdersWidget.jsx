@@ -2,10 +2,34 @@ import WidgetContainer from "../components/WidgetContainer";
 import OrderWidgetCategoryElement from "./OrderWidgetCategoryElement";
 import { orders } from "../data/orders";
 import { useTranslation } from "react-i18next";
+import { useUser } from "../contexts/UserContext";
+import { useEffect, useState } from "react";
+
 
 export default function OrdersWidget({ title }) {
-  const userId = JSON.parse(localStorage.getItem("userId"));
-  const orderStatuses = countOrdersByStatusForUser(userId, orders);
+
+  const countOrdersByStatusForUser = (orders) => {
+    let statusCounts = [];
+
+    userOrders.forEach((order) => {
+      let status = order.status;
+      if (statusCounts[status]) {
+        statusCounts[status] += 1;
+      } else {
+        statusCounts[status] = 1;
+      }
+    });
+
+    return statusCounts;
+  }
+
+  const { userId } = useUser();
+  const [userOrders, setUserOrders] = useState([]);
+  useEffect(() => {
+    setUserOrders(orders.filter((order) => { return order.userId == userId }))
+  }, [userId])
+
+  const orderStatuses = countOrdersByStatusForUser(userOrders);
   const { t } = useTranslation();
   return (
     <WidgetContainer title={title} className="h-[160px] w-[500px]">
@@ -26,20 +50,3 @@ export default function OrdersWidget({ title }) {
     </WidgetContainer>
   );
 }
-
-export const countOrdersByStatusForUser = (userId, orders) => {
-  const userOrders = orders.filter((order) => order.userId === userId);
-
-  const statusCounts = {};
-
-  userOrders.forEach((order) => {
-    const status = order.status;
-    if (statusCounts[status]) {
-      statusCounts[status] += 1;
-    } else {
-      statusCounts[status] = 1;
-    }
-  });
-
-  return statusCounts;
-};

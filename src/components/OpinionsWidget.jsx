@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OpinionListItem from "./OpinionListItem";
 import SplitedWidgetContainer from "./SplitedWidgetContainer";
 import DropDownMenu from "./DropDownMenu";
-import { opinions } from "../data/opinions"; // Import opinions from external file
+import { opinions } from "../data/opinions";
+import { useUser } from "../contexts/UserContext";
+
 
 export default function OpinionsWidget({ title }) {
+    const { userId } = useUser();
     const [selectedFilter, setSelectedFilter] = useState("all");
+    const [userOpinions, setUserOpinions] = useState([]);
 
     const options = [
         { label: "opinionsFilter.positive", value: "positive" },
@@ -13,7 +17,12 @@ export default function OpinionsWidget({ title }) {
         { label: "opinionsFilter.all", value: "all" }
     ];
 
-    const filteredOpinions = opinions
+
+    useEffect(() => {
+        setUserOpinions(opinions.filter((opinion) => opinion.userId === userId));
+    }, [userId])
+
+    const filteredOpinions = userOpinions
         .filter(opinion => {
             if (selectedFilter === "positive") return opinion.rate >= 4;
             if (selectedFilter === "negative") return opinion.rate <= 2;
@@ -25,7 +34,7 @@ export default function OpinionsWidget({ title }) {
         <SplitedWidgetContainer title={title} className="">
             <div className="flex flex-col absolute right-1/2 top-[40px]">
                 <div className="ml-auto flex">
-                    <DropDownMenu 
+                    <DropDownMenu
                         options={options}
                         value={selectedFilter}
                         onChange={(e) => setSelectedFilter(e.target.value)}
@@ -34,7 +43,7 @@ export default function OpinionsWidget({ title }) {
             </div>
 
             {filteredOpinions.map((opinion, index) => (
-                <OpinionListItem 
+                <OpinionListItem
                     key={index}
                     rate={opinion.rate}
                     description={opinion.description}

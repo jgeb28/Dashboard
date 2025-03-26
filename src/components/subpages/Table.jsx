@@ -3,6 +3,7 @@ import OutlineButton from "../OutlineButton";
 
 export default function Table({ columns, data }) {
   const { t } = useTranslation();
+
   return (
     <table className="min-w-full text-xs border rounded">
       <thead>

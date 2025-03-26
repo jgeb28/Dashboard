@@ -6,6 +6,7 @@ import Layout from "./pages/Layout";
 import Orders from "./pages/Orders";
 import Opinions from "./pages/Opinions";
 import Quality from "./pages/Quality";
+import { UserProvider } from "./contexts/UserContext";
 import { ThemeContext } from "./contexts/theme-context";
 import { useState, useEffect } from "react";
 
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
+      <UserProvider>
       <Router>
         <Routes>
           <Route element={<ProtectedRoute />}>
@@ -36,6 +38,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
+      </UserProvider>
     </ThemeContext.Provider>
   );
 }

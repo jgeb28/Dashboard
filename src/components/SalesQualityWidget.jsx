@@ -2,12 +2,17 @@ import WidgetContainer from "../components/WidgetContainer";
 import SaleAspectListItem from "./SaleAspctListItem";
 import { aspects } from "../data/aspects";
 import { useTranslation } from "react-i18next";
+import { useUser } from "../contexts/UserContext";
+import { useEffect, useState } from "react";
 
 export default function SalesQualityWidget({ title, className = "h-[160px] w-[500px]" }) {
-  const userId = JSON.parse(localStorage.getItem("userId"));
+  const { userId } = useUser();
+  const [userAspects, setUserAspects] = useState([])
   const { t } = useTranslation();
 
-  const userAspects = aspects.filter((aspect) => aspect.userId === userId);
+  useEffect(() => {
+    setUserAspects(aspects.filter((aspect) => aspect.userId === userId));
+  }, [userId])
 
   const getLowestAspects = () => {
     if (!userAspects || userAspects.length === 0) return [];

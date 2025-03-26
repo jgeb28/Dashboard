@@ -60,7 +60,7 @@ export default function Layout() {
                   to={item.link}
                   className={({ isActive }) =>
                     `block w-full h-full px-4 py-3 ${isActive
-                      ? "bg-gray dark:bg-dark" 
+                      ? "bg-gray dark:bg-dark"
                       : "border-gray-300 dark:border-dark"
                     }`
                   }

@@ -5,9 +5,11 @@ import { opinions } from "../data/opinions";
 import { useState, useEffect } from "react";
 import DropDownMenu from "../components/DropDownMenu";
 import OutlineButton from "../components/OutlineButton";
+import { useUser } from "../contexts/UserContext";
 
 export default function Opinions() {
   const { t } = useTranslation();
+  const { userId } = useUser();
   const opinionsPerPage = 8;
   const [page, setPage] = useState(0);
   const [category, setCategory] = useState("positive");
@@ -15,15 +17,16 @@ export default function Opinions() {
   const [paginatedOpinions, setPaginatedOpinions] = useState([]);
 
   useEffect(() => {
-    let filtered = opinions;
+    let userOpinions = opinions.filter((opinion) => opinion.userId === userId);
+    let filtered = userOpinions;
     if (category !== "all") {
-      filtered = opinions.filter((opinion) =>
+      let filtered = userOpinions.filter((opinion) =>
         opinion.rate >= 3 ? category === "positive" : category === "negative"
       );
     }
     setFilteredOpinions(filtered);
     setPage(0);
-  }, [category]);
+  }, [category, userId]);
 
   useEffect(() => {
     setPaginatedOpinions(
@@ -33,7 +36,6 @@ export default function Opinions() {
       )
     );
 
-    console.log(paginatedOpinions);
   }, [page, filteredOpinions]);
 
   const totalPages = Math.ceil(filteredOpinions.length / opinionsPerPage);
@@ -84,7 +86,7 @@ export default function Opinions() {
             {t("previous")}
           </OutlineButton>
 
-          <OutlineButton onClick={handleNextClick}>{t("next")}</OutlineButton>
+          <OutlineButton onClick={handleNextClick} disabled={page >= totalPages - 1}>{t("next")}</OutlineButton>
         </div>
       </div>
     </WidgetContainer>

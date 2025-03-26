@@ -2,16 +2,20 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../contexts/theme-context";
-import { users } from "../data/users";
+import { useUser } from "../contexts/UserContext";
+import { userAccounts } from "../data/users";
 
 export default function UserMenu() {
   const { theme } = useContext(ThemeContext);
+  const { userId, changeUser } = useUser();
+  const [selectedShop, setSelectedShop] = useState(userId);
   const [isOpen, setIsOpen] = useState(false);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("userId");
+    changeUser(null);
     navigate("/login");
   };
 
@@ -19,9 +23,10 @@ export default function UserMenu() {
     setIsOpen(!isOpen);
   };
 
-  const handleChangeShop = (shop) => {
-    localStorage.setItem("userId", JSON.stringify(shop + 1));
-    window.location.reload();
+  const handleChangeShop = (index) => {
+    const newUserId = index;
+    setSelectedShop(index);
+    changeUser(newUserId);
   };
 
   useEffect(() => {
@@ -40,8 +45,6 @@ export default function UserMenu() {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isOpen]);
-
-  const shops = ["Sklep 1", "Sklep 2"];
 
   return (
     <div className="relative" id="user-menu">
@@ -64,13 +67,16 @@ export default function UserMenu() {
       </svg>
       {isOpen && (
         <div className="absolute z-50 w-[200px] border border-gray-300 dark:border-dark rounded-lg shadow-md flex flex-col bg-white top-9 right-0 dark:bg-dark-panel">
-          {shops.map((store, index) => (
+          {userAccounts.map((store) => (
             <div
-              key={index}
-              onClick={() => handleChangeShop(index)}
-              className="flex items-center justify-center p-3 border-b border-gray-300 last:border-none hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg- cursor-pointer dark:border-dark"
+              key={store.id}
+              onClick={() => handleChangeShop(store.id)}
+              className={`flex items-center justify-center p-3 border-b border-gray-300 last:border-none cursor-pointer dark:border-dark ${selectedShop === store.id
+                  ? "bg-purple-200 dark:bg-purple-600"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
             >
-              {store}
+              {store.username}
             </div>
           ))}
           <div

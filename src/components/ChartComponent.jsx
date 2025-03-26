@@ -1,44 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import DropDownMenu from './DropDownMenu'; 
-import OutlineButton from './OutlineButton';
+import DropDownMenu from './DropDownMenu';
 import { useTranslation } from 'react-i18next';
 import mockedDataTable from '../data/chartData';
+import { useUser } from "../contexts/UserContext";
 
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 export default function ChartComponent() {
-  const [selectedOption, setSelectedOption] = useState('day'); 
-  const [selectedData, setSelectedData] = useState('revenue'); 
-  const [chartType, setChartType] = useState('line'); 
-
+  const [selectedOption, setSelectedOption] = useState('day');
+  const [selectedData, setSelectedData] = useState('revenue');
+  const [chartType, setChartType] = useState('line');
+  const [userChartData, setUserChartData] = useState([]);
+  const { userId } = useUser();
   const { t } = useTranslation();
 
-  const dayData = mockedDataTable.filter(item => item.period === 'day'|| !item.period);
-  const weekData = mockedDataTable.filter(item => item.period === 'week');
-  const monthData = mockedDataTable.filter(item => item.period === 'month');
-  console.log(monthData)
+  useEffect(() => {
+    setUserChartData(mockedDataTable.filter((data) => data.userId === userId));
+  }, [userId])
+  const dayData = userChartData.filter(item => item.period === 'day' || !item.period);
+  const weekData = userChartData.filter(item => item.period === 'week');
+  const monthData = userChartData.filter(item => item.period === 'month');
 
   const chartData = {
     day: {
-      labels: dayData.map(item =>  {
+      labels: dayData.map(item => {
         let date = new Date(item.date)
         const formattedHour = date.getHours().toString().padStart(2, '0') + ':00';
-  
+
         return formattedHour;
       }),
       revenue: dayData.map(item => item.revenue),
       itemsSold: dayData.map(item => item.itemsSold),
     },
     week: {
-      labels: weekData.map(item => item.date.slice(5,10)),
+      labels: weekData.map(item => item.date.slice(5, 10)),
       revenue: weekData.map(item => item.revenue),
       itemsSold: weekData.map(item => item.itemsSold),
     },
     year: {
-      labels: monthData.map(item => item.date.slice(0,7)),
+      labels: monthData.map(item => item.date.slice(0, 7)),
       revenue: monthData.map(item => item.revenue),
       itemsSold: monthData.map(item => item.itemsSold),
     },
@@ -78,33 +81,33 @@ export default function ChartComponent() {
   ];
   return (
     <div className="mx-6 h-[200px]">
-        {chartType === 'line' ? (
-            <Line data={data} options={options} />
-        ) : (
-            <Bar data={data} options={options} />
-        )}
-        <div className='flex items-center mt-2'>
-            <DropDownMenu 
-                label="Time Period"
-                options={periodOptions} 
-                value={selectedOption} 
-                onChange={(e) => setSelectedOption(e.target.value)} 
-            />
+      {chartType === 'line' ? (
+        <Line data={data} options={options} />
+      ) : (
+        <Bar data={data} options={options} />
+      )}
+      <div className='flex items-center mt-2'>
+        <DropDownMenu
+          label="Time Period"
+          options={periodOptions}
+          value={selectedOption}
+          onChange={(e) => setSelectedOption(e.target.value)}
+        />
 
-            <DropDownMenu 
-                label="Data Type"
-                options={dataOptions} 
-                value={selectedData} 
-                onChange={(e) => setSelectedData(e.target.value)} 
-            />
+        <DropDownMenu
+          label="Data Type"
+          options={dataOptions}
+          value={selectedData}
+          onChange={(e) => setSelectedData(e.target.value)}
+        />
 
-            <DropDownMenu 
-                label="Chart Type"
-                options={typeOptions} 
-                value={chartType} 
-                onChange={(e) => setChartType(e.target.value)} 
-            />
-        </div>
+        <DropDownMenu
+          label="Chart Type"
+          options={typeOptions}
+          value={chartType}
+          onChange={(e) => setChartType(e.target.value)}
+        />
+      </div>
     </div>
   );
 }

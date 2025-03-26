@@ -17,6 +17,12 @@ body {
 #root {
   --bg-gray: #f1f3f4;
   --bg-dark: #0d0f11;
+
+  background-color: var(--bg-gray);
+}
+
+.dark #root {
+  background-color: var(--bg-dark);
 }
 
 * {
