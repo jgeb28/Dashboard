@@ -14,9 +14,10 @@
     "orderDate": "Data zamówienia",
     "status": {
       "column": "Status",
-      "unPaid": "Nieopłacone",
-      "unSent": "Niewysłane",
-      "returned": "Zwroty"
+      "unpaid": "Nieopłacone",
+      "paid": "Opłacone",
+      "shipped": "W drodze",
+      "delivered": "Dostarczone"
     },
     "price": "Kwota",
     "details": "Szczegóły"
@@ -55,7 +56,7 @@
   "chartPeriodFilter": {
     "day": "Dzień",
     "week": "Tydzień",
-    "year": "Rok"
+    "month": "Miesiąc"
   },
   "chartDataFilter": {
     "revenue": "Obrót",

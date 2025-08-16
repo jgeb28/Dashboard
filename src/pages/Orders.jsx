@@ -1,12 +1,10 @@
-import WidgetContainer from "../components/WidgetContainer";
-import { useTranslation } from "react-i18next";
-import { orders } from "../data/orders";
 import { useState, useEffect } from "react";
-import OutlineButton from "../components/OutlineButton";
+import { useTranslation } from "react-i18next";
+import WidgetContainer from "../components/WidgetContainer";
 import DropDownMenu from "../components/DropDownMenu";
 import Table from "../components/subpages/Table";
+import OutlineButton from "../components/OutlineButton";
 import { useUser } from "../contexts/UserContext";
-
 
 export default function Orders() {
   const { t } = useTranslation();
@@ -14,17 +12,37 @@ export default function Orders() {
 
   const ordersPerPage = 8;
   const [page, setPage] = useState(0);
-  const [category, setCategory] = useState("unPaid");
+  const [status, setStatus] = useState("UNPAID");
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [paginatedOrders, setPaginatedOrders] = useState([]);
 
+  const statusOptions = [
+    { label: t("ordersPage.status.unpaid"), value: "UNPAID" },
+    { label: t("ordersPage.status.paid"), value: "PAID" },
+    { label: t("ordersPage.status.shipped"), value: "SHIPPED" },
+    { label: t("ordersPage.status.delivered"), value: "DELIVERED" },
+  ];
+
   useEffect(() => {
-    const newFilteredOrders = orders.filter(
-      (order) => order.userId === userId && order.status === category
-    );
-    setFilteredOrders(newFilteredOrders);
-    setPage(0);
-  }, [category, userId]);
+    if (!userId) return;
+
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/orders/${userId}?status=${status}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch orders");
+        const data = await response.json();
+        setFilteredOrders(data);
+        setPage(0);
+      } catch (error) {
+        console.error(error);
+        setFilteredOrders([]);
+      }
+    };
+
+    fetchOrders();
+  }, [userId, status]);
 
   useEffect(() => {
     setPaginatedOrders(
@@ -45,16 +63,14 @@ export default function Orders() {
   return (
     <WidgetContainer className="m-4" title={t("ordersPage.title")}>
       <div className="px-12 py-4">
-        <DropDownMenu
-          label={t("ordersPage.status.Unpaid")}
-          options={[
-            { label: t("ordersPage.status.unPaid"), value: "unPaid" },
-            { label: t("ordersPage.status.unSent"), value: "unSent" },
-            { label: t("ordersPage.status.returned"), value: "returned" },
-          ]}
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+        <div className="mb-4 flex justify-end">
+          <DropDownMenu
+            options={statusOptions}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          />
+        </div>
+
         <Table
           columns={[
             "ID",
@@ -66,15 +82,15 @@ export default function Orders() {
           data={paginatedOrders.map((order) => ({
             id: order.id,
             date: order.date,
-            status: t(`ordersPage.status.${order.status}`),
+            status: t(`ordersPage.status.${order.status.toLowerCase()}`),
             price: order.price,
           }))}
         />
+
         <div className="flex gap-4 mt-4 justify-end">
           <OutlineButton onClick={handlePreviousClick} disabled={page === 0}>
             {t("previous")}
           </OutlineButton>
-
           <OutlineButton
             onClick={handleNextClick}
             disabled={page >= totalPages - 1}
@@ -86,3 +102,4 @@ export default function Orders() {
     </WidgetContainer>
   );
 }
+

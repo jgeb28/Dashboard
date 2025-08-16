@@ -14,9 +14,10 @@
     "orderDate": "Order Date",
     "status": {
       "column": "Status",
-      "unPaid": "Unpaid",
-      "unSent": "Unsent",
-      "returned": "Returns"
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "delivered": "Delivered"
     },
     "price": "Price",
     "details": "Details"
@@ -55,7 +56,7 @@
   "chartPeriodFilter": {
     "day": "Day",
     "week": "Week",
-    "year": "Year"
+    "month": "Month"
   },
   "chartDataFilter": {
     "revenue": "Revenue",
@@ -107,7 +108,7 @@
     "superSeller": "Super Seller"
   },
   "dailyTipLabel": "Daily tip",
-  "dailyTip": "Remember to shipp parcels on time",
+  "dailyTip": "Remember to ship parcels on time",
   "dashboard": "Dashboard",
   "salesQuality": "Sales Quality",
   "logout": "Logout",

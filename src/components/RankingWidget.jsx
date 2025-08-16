@@ -4,8 +4,6 @@ import OfferListItem from "./OfferListItem";
 import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 
-import { offers } from "../data/offers";
-
 export default function RankingWidget({ title }) {
   const { userId } = useUser();
   const [selectedOption, setSelectedOption] = useState("mostFrequent")
@@ -16,18 +14,35 @@ export default function RankingWidget({ title }) {
     { label: "rankingFilter.leastFrequent", value: "leastFrequent" },
   ];
 
-  useEffect(() => {
-    let userOffers = offers.filter((offer) => offer.userId === userId)
-    setSortedOffers([...userOffers].sort((a, b) => {
-      return selectedOption === "mostFrequent" ? b.units - a.units : a.units - b.units;
-    }));
-  }, [selectedOption, userId])
+   useEffect(() => {
+    if (!userId) return;
+
+    const fetchOffers = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/offers/${userId}`); 
+        if (!response.ok) throw new Error("Failed to fetch offers");
+        const data = await response.json();
+
+        const userOffers = data;
+        const sorted = [...userOffers].sort((a, b) =>
+          selectedOption === "mostFrequent" ? b.units - a.units : a.units - b.units
+        );
+
+        setSortedOffers(sorted);
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      }
+    };
+
+    fetchOffers();
+  }, [userId, selectedOption]);
+
 
 
   return (
     <WidgetContainer
       title={title}
-      className="overflow-hidden flex flex-col h-[450px] w-[400px]"
+      className="overflow-hidden flex flex-col h-[517px] w-[400px]"
     >
       <div className="ml-auto mr-3 mt-2">
         <DropDownMenu

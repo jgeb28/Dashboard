@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import OpinionListItem from "./OpinionListItem";
 import SplitedWidgetContainer from "./SplitedWidgetContainer";
 import DropDownMenu from "./DropDownMenu";
-import { opinions } from "../data/opinions";
 import { useUser } from "../contexts/UserContext";
 
 
@@ -17,18 +16,24 @@ export default function OpinionsWidget({ title }) {
         { label: "opinionsFilter.all", value: "all" }
     ];
 
-
     useEffect(() => {
-        setUserOpinions(opinions.filter((opinion) => opinion.userId === userId));
-    }, [userId])
+        if (!userId) return;
 
-    const filteredOpinions = userOpinions
-        .filter(opinion => {
-            if (selectedFilter === "positive") return opinion.rate >= 4;
-            if (selectedFilter === "negative") return opinion.rate <= 2;
-            return true;
-        })
-        .slice(0, 5);
+        const fetchOpinions = async () => {
+            try {
+                const filterParam = selectedFilter !== "all" ? `/${selectedFilter}` : "";
+                const response = await fetch(`http://localhost:8080/api/opinions${filterParam}/${userId}`);
+                if (!response.ok)
+                    throw new Error("Failed to fetch opinions");
+                const data = await response.json();
+                setUserOpinions(data.slice(0, 5)); 
+            } catch (error) {
+                console.error("Error fetching opinions:", error);
+            }
+        };
+
+        fetchOpinions();
+    }, [userId, selectedFilter]);
 
     return (
         <SplitedWidgetContainer title={title} className="">
@@ -42,11 +47,12 @@ export default function OpinionsWidget({ title }) {
                 </div>
             </div>
 
-            {filteredOpinions.map((opinion, index) => (
+            {userOpinions.map((opinion, index) => (
                 <OpinionListItem
                     key={index}
                     rate={opinion.rate}
                     description={opinion.description}
+                    productName={opinion.productName}
                     className="relative"
                 >
                     <div className="absolute bottom-0 left-0 w-[calc(100%-10px)] h-[1px] bg-gray-300"></div>

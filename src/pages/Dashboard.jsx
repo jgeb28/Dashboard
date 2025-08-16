@@ -21,7 +21,7 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-wrap gap-[10px] max-w-[1030px]">
             <div className=''><RankingWidget title={t('dashboardPage.rankingWigetTitle')} /></div>
-            <div className="flex flex-col">
+            <div className="flex flex-col  max-w-[600px]">
               <SalesChartWidget title={t('dashboardPage.salesChartWidgetTitle')} />
               <OpinionsWidget title={t('dashboardPage.opinionsWidgetTitle')} />
             </div>

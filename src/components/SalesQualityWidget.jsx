@@ -1,46 +1,46 @@
 import WidgetContainer from "../components/WidgetContainer";
 import SaleAspectListItem from "./SaleAspctListItem";
-import { aspects } from "../data/aspects";
 import { useTranslation } from "react-i18next";
 import { useUser } from "../contexts/UserContext";
 import { useEffect, useState } from "react";
 
 export default function SalesQualityWidget({ title, className = "h-[160px] w-[500px]" }) {
   const { userId } = useUser();
-  const [userAspects, setUserAspects] = useState([])
+  const [scoreData, setScoreData] = useState({ score: 0, scale: 0 });
+  const [worstAspects, setWorstAspects] = useState([]);
   const { t } = useTranslation();
 
   useEffect(() => {
-    setUserAspects(aspects.filter((aspect) => aspect.userId === userId));
-  }, [userId])
+    if (!userId) return;
 
-  const getLowestAspects = () => {
-    if (!userAspects || userAspects.length === 0) return [];
+    const fetchScoreAndAspects = async () => {
+      try {
+        const scoreRes = await fetch(`http://localhost:8080/api/users/${userId}/score`);
+        if (!scoreRes.ok) throw new Error("Failed to fetch score");
+        const scoreJson = await scoreRes.json();
+        setScoreData(scoreJson);
 
-    const aspectsWithScores = userAspects.map((aspect) => ({
-      ...aspect,
-      score: aspect.points / aspect.scale,
-    }));
+        const aspectsRes = await fetch(`http://localhost:8080/api/users/${userId}/aspects/worst`);
+        if (!aspectsRes.ok) throw new Error("Failed to fetch worst aspects");
+        const aspectsJson = await aspectsRes.json();
+        setWorstAspects(aspectsJson);
+      } catch (error) {
+        console.error("Error fetching sales quality data:", error);
+      }
+    };
 
-    aspectsWithScores.sort((a, b) => a.score - b.score);
+    fetchScoreAndAspects();
+  }, [userId]);
 
-    return aspectsWithScores.slice(0, 3);
-  };
+  const getCategory = (score, scale) => {
+    const percentage = (score / scale) * 100;
 
-  const calcPoints = () => {
-    return userAspects.reduce((acc, curr) => acc + curr.points, 0);
-  };
+    if (percentage <= 20) return t("sellerCategories.worstSeller");
+    if (percentage <= 40) return t("sellerCategories.badSeller");
+    if (percentage <= 60) return t("sellerCategories.normalSeller");
+    if (percentage <= 80) return t("sellerCategories.goodSeller");
+    if (percentage <= 100) return t("sellerCategories.superSeller");
 
-  const calcAllPoints = () => {
-    return userAspects.reduce((acc, curr) => acc + curr.scale, 0);
-  };
-
-  const getCategory = (score) => {
-    if (score <= 10) return t("sellerCategories.worstSeller");
-    if (score <= 20) return t("sellerCategories.badSeller");
-    if (score <= 30) return t("sellerCategories.normalSeller");
-    if (score <= 40) return t("sellerCategories.goodSeller");
-    if (score <= 50) return t("sellerCategories.bestSeller");
   };
 
   return (
@@ -48,24 +48,20 @@ export default function SalesQualityWidget({ title, className = "h-[160px] w-[50
       <div className="flex justify-between">
         <div className="flex">
           <div className="m-3">
-            <img src="/star_filled.svg" className="h-20"></img>
+            <img src="/star_filled.svg" className="h-20" />
           </div>
           <div className="flex flex-col m-3">
             <div className="text-[16px] mb-2">
-              {t("salesQualityWidget.score")} {calcPoints()}/{calcAllPoints()}
+              {t("salesQualityWidget.score")} {scoreData.score}/{scoreData.scale}
             </div>
-            <div className="text-[16px]">
-              {t("salesQualityWidget.rankLabel")}
-            </div>
-            <div className="text-[16px]">{getCategory(calcPoints())}</div>
+            <div className="text-[16px]">{t("salesQualityWidget.rankLabel")}</div>
+            <div className="text-[16px]">{getCategory(scoreData.score, scoreData.scale)}</div>
           </div>
         </div>
         <div className="flex flex-col mb-1 mt-2 mx-3 items-center">
-          <div className="mb-2 text-[12px]">
-            {t("salesQualityWidget.aspectsToImprove")}
-          </div>
-          {getLowestAspects()?.map((aspect, index) => (
-            <SaleAspectListItem key={index} name={aspect.aspect} />
+          <div className="mb-2 text-[12px]">{t("salesQualityWidget.aspectsToImprove")}</div>
+          {worstAspects.map((aspect) => (
+            <SaleAspectListItem key={aspect.Id} name={aspect.Name} />
           ))}
         </div>
       </div>
