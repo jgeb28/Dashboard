@@ -8,7 +8,7 @@ export default function OfferListItem({ name, units, revenue, viewsNumber, image
                 <img src={image} className='bg-gray-400 h-20 w-20 mx-3 mt-2' />
             </div>
             <div className='flex flex-col mt-2'>
-                <div className='text-lg mb-1'>{name}</div>
+                <div className='text-lg mb-1 truncate max-w-[250px]'>{name}</div>
                 <div>{t('offerItem.units')} {units}</div>
                 {showViews ? (
                     <div>{t('offerItem.numberOfViews')} {viewsNumber}</div>
